@@ -1,43 +1,31 @@
 pool:
   vmImage: ubuntu-latest
-
 stages:
-- stage: Build 
-  jobs:
-  - job: build
-    displayName: 'Build'
-    steps:
-    - task: Maven@4
-      inputs:
-        mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false
-- stage: SAST
-  jobs:
-  - job: sast
-    displayName: 'SAST'
-    steps:
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: 'sonarcloud'
-          organization: 'devsecopslabfinal'
-          projectKey: 'DevSecOpsLabFinal_spring-boot-kubernetes'
-          projectName: 'spring-boot-kubernetes'
+  - stage: Build
+    jobs:
+      - job: build
+        displayName: 'Build'
+        steps:
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
 
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: true
-          sqMavenPluginVersionChoice: 'latest'
+        - task: CopyFiles@2
+          inputs:
+              sourceFolder: '$(Build.SourcesDirectory)'
+              contents: |
+                **/target/*.jar
+                **/surefire-reports/*.xml
+              targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: appJar
+              publishLocation: 'Container'
