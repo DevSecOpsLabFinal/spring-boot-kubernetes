@@ -88,5 +88,5 @@ stages:
           inputs:
             projectName: 'spring-boot-kubernetes'
             scanPath: '$(Build.SourcesDirectory)/target'
-            format: 'JSON'
+            format: 'HTML'
             reportsDirectory: 'reporte'      
