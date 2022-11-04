@@ -68,3 +68,25 @@ stages:
             inputs:
               SonarCloud: 'sonarcloud'
               organization: 'devsecopslabfinal'     
+  - stage: SCA
+    jobs:
+    - job: Job
+      displayName: 'SCA Dependency check'
+      steps:
+        - task: Maven@4
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
+          displayName: Maven - Genera Build
+        - task: dependency-check-build-task@6
+          inputs:
+            projectName: 'spring-boot-kubernetes'
+            scanPath: '$(Build.SourcesDirectory)/target'
+            format: 'JSON'
+            reportsDirectory: 'reporte'      
