@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     List<User> users = Arrays.asList(new User(1, "Dara"), new User(2, "Seyha"));
-    String password = "123456789";
-
+   /* String password = "123456789";
     public static void main(String[] args) {
         try
         {
@@ -24,7 +23,7 @@ public class UserService {
         catch(NoSuchAlgorithmException | NoSuchPaddingException e)
         {
         }
-    }
+    }*/
     public List<User> getUser(String containName) {
 
         return users.stream().filter(user -> user.getName().contains(containName)).collect(Collectors.toList());
