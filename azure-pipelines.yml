@@ -71,7 +71,7 @@ stages:
   - stage: SCA
     jobs:
     - job: Job
-      displayName: 'SCA Dependency check'
+      displayName: 'SCA'
       steps:
         - task: Maven@4
           inputs:
@@ -85,8 +85,9 @@ stages:
             sonarQubeRunAnalysis: false
           displayName: Maven - Genera Build
         - task: dependency-check-build-task@6
+          displayName: Dependency check
           inputs:
             projectName: 'spring-boot-kubernetes'
             scanPath: '$(Build.SourcesDirectory)/target'
-            format: 'HTML'
-            reportsDirectory: 'reporte'      
+            format: 'ALL'
+            failOnCVSS: '7'
