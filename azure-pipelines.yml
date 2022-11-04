@@ -131,6 +131,6 @@ stages:
           displayName: Image Scan
         - task: Docker@2
           inputs:
-            containerRegistry: 'docker'
+            containerRegistry: 'DockerRegistry'
             repository: 'mawidanche/lab-final-dev-sec-ops'
             command: 'buildAndPush'
