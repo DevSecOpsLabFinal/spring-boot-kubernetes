@@ -2,6 +2,10 @@ package org.soyphea.k8s.srevice;
 
 import org.soyphea.k8s.domain.User;
 import org.springframework.stereotype.Service;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +14,16 @@ import java.util.stream.Collectors;
 public class UserService {
 
     List<User> users = Arrays.asList(new User(1, "Dara"), new User(2, "Seyha"));
-
+   /* String password = "123456789";
+    public static void main(String[] args) {
+        try
+        {
+            Cipher c1 = Cipher.getInstance("DES"); // Noncompliant: DES works with 56-bit keys allow attacks via exhaustive search
+        }
+        catch(NoSuchAlgorithmException | NoSuchPaddingException e)
+        {
+        }
+    }*/
     public List<User> getUser(String containName) {
 
         return users.stream().filter(user -> user.getName().contains(containName)).collect(Collectors.toList());
